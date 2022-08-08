@@ -1,21 +1,15 @@
 const knightsService = require('../services/knight.service')
 
-
-
-
-
 const findAllKnightsController = (req, res) => {
     const knights = knightsService.findAllKnightsService();
     res.send(knights)
 };
-
 
 const findByIdKnightController = (req, res) =>{
     const idParam = Number(req.params.id);
     const chosenKnight = knightsService.findByIdKnightService(idParam);
     res.send(chosenKnight);
 };
-
 
 const createKnightController = (req, res) =>{
   const knight = req.body;
@@ -37,9 +31,6 @@ const deleteKnightController = (req, res) =>{
   knightsService.deleteKnightService(idParam);
   res.send({ message: 'Cavaleiro deletado com sucesso!' });
 };
-
-
-
 
 module.exports = {
     findAllKnightsController,

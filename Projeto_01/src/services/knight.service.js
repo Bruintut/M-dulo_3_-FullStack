@@ -22,8 +22,6 @@ const knightsOfTheZodiacSaintSeiya = [
     },
   ];
 
-
-
   const findAllKnightsService = () =>{
     return knightsOfTheZodiacSaintSeiya;
   };
@@ -32,7 +30,6 @@ const knightsOfTheZodiacSaintSeiya = [
     return knightsOfTheZodiacSaintSeiya.find((knight) => knight.id === idParam);
      
   };
-
 
   const createKnightService = (newKnight) =>{
     const newId = knightsOfTheZodiacSaintSeiya.length + 1;
@@ -52,12 +49,6 @@ const knightsOfTheZodiacSaintSeiya = [
     const knightIndex = knightsOfTheZodiacSaintSeiya.findIndex((knight) => knight.id == id);
     return knightsOfTheZodiacSaintSeiya.splice(knightIndex, 1);
   }
-
-
-
-
-
-
 
   module.exports = {
     findAllKnightsService,
