@@ -1,53 +1,33 @@
-const knightsOfTheZodiacSaintSeiya = [
-    {
-      id: 1,
-      name: 'Seiya',
-      skill:'Meteoro de Pegasos',
-      picture: 'assets/images/seiya.png',
-      
-    },
-    {
-      id: 2,
-      name: 'Ikki',
-      skill:'Ave Fênix.',
-      picture: 'assets/images/ikki.png',
-      
-    },
-    {
-      id: 3,
-      name: 'Hyoga',
-      skill:'Pó de Diamante.',
-      picture: 'assets/images/hyoga.png',
-      
-    },
-  ];
 
-  const findAllKnightsService = () =>{
-    return knightsOfTheZodiacSaintSeiya;
+
+  const Knight = require('../models/Knight')
+
+
+  const findAllKnightsService = async () =>{
+    const knights = await Knight.find();
+
+    return knights;
   };
 
-  const findByIdKnightService = (idParam) => {
-    return knightsOfTheZodiacSaintSeiya.find((knight) => knight.id === idParam);
+  const findByIdKnightService = async (id) => {
+    const knight = await Knight.findById(id);
+    return knight;
      
   };
 
-  const createKnightService = (newKnight) =>{
-    const newId = knightsOfTheZodiacSaintSeiya.length + 1;
+  const createKnightService = async (newKnight) =>{
+    const newId = await Knight.create(newKnight);
     newKnight.id = newId;
-    knightsOfTheZodiacSaintSeiya.push(newKnight);
     return newKnight;
   };
 
-  const updateKnightService = (id, knightEdited) => {
-    knightEdited['id'] = id;
-    const knightIndex = knightsOfTheZodiacSaintSeiya.findIndex((knight) => knight.id == id);
-    knightsOfTheZodiacSaintSeiya[knightIndex] = knightEdited;
-    return knightEdited;
+  const updateKnightService = async (id, knightEdited) => {
+    const updatedKnight = await Knight.findByIdAndUpdate(id, knightEdited);
+    return updatedKnight;
   };
 
-  const deleteKnightService = (id) => {
-    const knightIndex = knightsOfTheZodiacSaintSeiya.findIndex((knight) => knight.id == id);
-    return knightsOfTheZodiacSaintSeiya.splice(knightIndex, 1);
+  const deleteKnightService = async (id) => {
+    return Knight.findByIdAndDelete(id);
   }
 
   module.exports = {

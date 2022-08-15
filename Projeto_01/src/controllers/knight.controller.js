@@ -1,70 +1,95 @@
 const knightsService = require('../services/knight.service')
+const mongoose = require('mongoose')
 
-const findAllKnightsController = (req, res) => {
-    const knights = knightsService.findAllKnightsService();
+const findAllKnightsController = async (req, res) => {
+    const knights = await knightsService.findAllKnightsService();
     if(knights.length == 0){
       return res.status(404).send({message: 'Não existe nenhum cavaleiro cadastrado'});
     }
     res.send(knights)
 };
 
-const findByIdKnightController = (req, res) =>{
-    const idParam = Number(req.params.id);
+const findByIdKnightController = async (req, res) =>{
+    const idParam = req.params.id;
 
-    if (!idParam){
-      return res.status(400).send({message: "Id inválido"});
+    if (!mongoose.Types.ObjectId.isValid(idParam)){
+      res.status(400).send({message: "Id inválido"});
+      return; 
 
     }
-    const chosenKnight = knightsService.findByIdKnightService(idParam);
+    const chosenKnight = await knightsService.findByIdKnightService(idParam);
+
     if (!chosenKnight){
       return res.status(404).send({message: "Cavaleiro não encontrado"});
 
     }
-
-
     res.send(chosenKnight);
 };
 
-const createKnightController = (req, res) =>{
+const createKnightController = async (req, res) =>{
   const knight = req.body;
 
-  if (!knight || !knight.name || knight.skill || knight.picture){
+  if (
+    !knight || 
+    !knight.name || 
+    !knight.skill || 
+    !knight.picture
+    ) {
     return res.status(400).send({message: "Envie todos os campos do cavaleiro!"});
   }
-  const newKnight = knightsService.createKnightService(knight);
+  const newKnight = await knightsService.createKnightService(knight);
   res.send(newKnight);
 
 };
 
-const updateKnightController = (req, res) => {
-  const idParam = Number(req.params.id);
-  if (!idParam){
-    return res.status(400).send({message: "Id inválido"});
-  }
+const updateKnightController = async (req, res) => {
+  const idParam = req.params.id;
   const knightEdit = req.body;
-  if (!knightEdit || !knightEdit.name || knightEdit.skill || knightEdit.picture){
+  if (!mongoose.Types.ObjectId.isValid(idParam)){
+    res.status(400).send({message: "Id inválido"});
+    return;
+  }
+
+  const chosenKnight = await knightsService.findByIdKnightService(idParam);
+  
+  if(!chosenKnight){
+    return res.status(404).send({message: 'Cavaleiro não encontrado!'});
+  }
+  
+  if (
+    !knightEdit || 
+    !knightEdit.name || 
+    !knightEdit.skill || 
+    !knightEdit.picture
+    ) {
     return res.status(400).send({message: "Envie todos os campos do cavaleiro!"});
   }
 
 
-  const updatedKnight = knightsService.updateKnightService(idParam, knightEdit);
+  const updatedKnight = await knightsService.updateKnightService(idParam, knightEdit);
   res.send(updatedKnight);
 
 };
 
-const deleteKnightController = (req, res) =>{
+const deleteKnightController = async (req, res) =>{
   const idParam = Number(req.params.id);
-  if (!idParam){
-    return res.status(400).send({message: "Id inválido"});
+
+  if (!mongoose.Types.ObjectId.isValid(idParam)){
+    res.status(400).send({message: "Id inválido"});
+    return; 
 
   }
 
+  const chosenKnight = await knightsService.findByIdKnightService(idParam);
 
-  knightsService.deleteKnightService(idParam);
-  
+  if(!chosenKnight) {
+    res.send({ message: 'Cavaleiro não encontrado!' });
+  }
 
+  await knightsService.deleteKnightService(idParam);
 
   res.send({ message: 'Cavaleiro deletado com sucesso!' });
+
 };
 
 module.exports = {
