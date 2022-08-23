@@ -82,6 +82,7 @@ const deleteKnightController = async (req, res) =>{
 
   const chosenKnight = await knightsService.findByIdKnightService(idParam);
 
+
   if(!chosenKnight) {
     res.send({ message: 'Cavaleiro não encontrado!' });
   }
