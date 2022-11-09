@@ -25,11 +25,6 @@ const findByIdKnightController = async (req, res) => {
 const createKnightController = async (req, res) => {
   const knight = req.body;
 
-  if (!knight || !knight.name || !knight.skill || !knight.picture) {
-    return res
-      .status(400)
-      .send({ message: 'Envie todos os campos do cavaleiro!' });
-  }
   const newKnight = await knightsService.createKnightService(knight);
   res.send(newKnight);
 };
@@ -37,24 +32,6 @@ const createKnightController = async (req, res) => {
 const updateKnightController = async (req, res) => {
   const idParam = req.params.id;
   const knightEdit = req.body;
-  
-
-  const chosenKnight = await knightsService.findByIdKnightService(idParam);
-
-  if (!chosenKnight) {
-    return res.status(404).send({ message: 'Cavaleiro não encontrado!' });
-  }
-
-  if (
-    !knightEdit ||
-    !knightEdit.name ||
-    !knightEdit.skill ||
-    !knightEdit.picture
-  ) {
-    return res
-      .status(400)
-      .send({ message: 'Envie todos os campos do cavaleiro!' });
-  }
 
   const updatedKnight = await knightsService.updateKnightService(
     idParam,
@@ -64,13 +41,7 @@ const updateKnightController = async (req, res) => {
 };
 
 const deleteKnightController = async (req, res) => {
-  const idParam = Number(req.params.id);
-
-  const chosenKnight = await knightsService.findByIdKnightService(idParam);
-
-  if (!chosenKnight) {
-    res.send({ message: 'Cavaleiro não encontrado!' });
-  }
+  const idParam = req.params.id;
 
   await knightsService.deleteKnightService(idParam);
 

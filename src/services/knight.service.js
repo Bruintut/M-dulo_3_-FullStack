@@ -6,24 +6,23 @@ const findAllKnightsService = async () => {
   return knights;
 };
 
-const findByIdKnightService = async (id) => {
-  const knight = await Knight.findById(id);
+const findByIdKnightService = async (idParam) => {
+  const knight = await Knight.findById(idParam);
   return knight;
 };
 
 const createKnightService = async (newKnight) => {
-  const newId = await Knight.create(newKnight);
-  newKnight.id = newId;
-  return newKnight;
+  const createKnight = await Knight.create(newKnight);
+  return createKnight;
 };
 
-const updateKnightService = async (id, knightEdited) => {
-  const updatedKnight = await Knight.findByIdAndUpdate(id, knightEdited);
+const updateKnightService = async (idParam, knightEdited) => {
+  const updatedKnight = await Knight.findByIdAndUpdate(idParam, knightEdited);
   return updatedKnight;
 };
 
-const deleteKnightService = async (id) => {
-  return Knight.findByIdAndDelete(id);
+const deleteKnightService = async (idParam) => {
+  return await Knight.findByIdAndDelete(idParam);
 };
 
 module.exports = {
