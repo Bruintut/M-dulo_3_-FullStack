@@ -37,10 +37,7 @@ const createKnightController = async (req, res) => {
 const updateKnightController = async (req, res) => {
   const idParam = req.params.id;
   const knightEdit = req.body;
-  if (!mongoose.Types.ObjectId.isValid(idParam)) {
-    res.status(400).send({ message: 'Id inválido' });
-    return;
-  }
+  
 
   const chosenKnight = await knightsService.findByIdKnightService(idParam);
 
